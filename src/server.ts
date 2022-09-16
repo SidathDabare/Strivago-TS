@@ -13,16 +13,16 @@ import {
 } from "./errorHandlers"
 
 import usersRouter from "./api/users/index"
-import accomadationRouter from "./api/accomadation/index"
+//import accomadationRouter from "./api/accomadation/index"
 
 
-const server = express()
+export const server = express()
 const port = process.env.PORT || 3001
 
 server.use(cors())
 server.use(express.json())
 
-server.use("/accomadation", accomadationRouter)
+//server.use("/accomadation", accomadationRouter)
 server.use("/users", usersRouter)
 
 server.use(unauthorizedErrorHandler)
