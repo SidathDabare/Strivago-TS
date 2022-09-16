@@ -1,9 +1,15 @@
 /** @format */
 
+import { Request, RequestHandler } from "express"
 import createHttpError from "http-errors"
-import { verifyAccessToken } from "./tools.js"
+import { verifyAccessToken } from "./tools"
+import { UserDocument } from "../../models/types/users"
 
-export const JWTAuthMiddleware = async (req, res, next) => {
+export interface IUserRequest extends Request {
+  user?: Partial<UserDocument>
+}
+
+export const JWTAuthMiddleware: RequestHandler = async (req: IUserRequest, res, next) => {
   if (!req.headers.authorization) {
     next(
       createHttpError(
@@ -18,8 +24,8 @@ export const JWTAuthMiddleware = async (req, res, next) => {
       const payload = await verifyAccessToken(token)
 
       req.user = {
-        _id: payload._id,
-        role: payload.role,
+        _id: payload!._id,
+        role: payload!.role,
       }
 
       next()

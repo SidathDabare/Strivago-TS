@@ -1,6 +1,7 @@
 /** @format */
 
 import mongoose from "mongoose"
+import {AccomadationDocument, AccomadationModel } from "../../models/types/accomadation"
 
 const { Schema, model } = mongoose
 
@@ -18,4 +19,4 @@ const AccomadationSchema = new Schema(
   }
 )
 
-export default model("Accomadation", AccomadationSchema)
+export default model<AccomadationDocument, AccomadationModel>("Accomadation", AccomadationSchema)

@@ -2,6 +2,7 @@
 
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import { UserDocument, UsersModel } from "../../models/types/users"
 
 const { Schema, model } = mongoose
 
@@ -57,4 +58,4 @@ UserSchema.static("checkCredentials", async function (email, plainPassword) {
   }
 })
 
-export default model("Users", UserSchema)
+export default model<UserDocument, UsersModel>("Users", UserSchema)

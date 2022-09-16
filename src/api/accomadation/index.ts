@@ -2,17 +2,17 @@
 
 import express from "express"
 import createHttpError from "http-errors"
-import AccomadationModel from "./model.js"
-import { JWTAuthMiddleware } from "../../lib/auth/token.js"
-import { hostOnlyMiddleware } from "../../lib/auth/host.js"
-import q2m from "query-to-mongo"
+import AccomadationModel from "./model"
+import { JWTAuthMiddleware } from "../../lib/auth/JWTMiddleware"
+import { adminMiddleware } from "../../lib/auth/host"
+//import q2m from "query-to-mongo"
 
 const accomadationRouter = express.Router()
 
 accomadationRouter.post(
   "/",
   JWTAuthMiddleware,
-  hostOnlyMiddleware,
+  adminMiddleware,
   async (req, res, next) => {
     try {
       const newAccomadation = new AccomadationModel(req.body)
@@ -20,7 +20,8 @@ accomadationRouter.post(
 
       res.status(201).send({ _id })
     } catch (error) {
-      next(403, "Host Only Endpoint!")
+      //next(403, "Host Only Endpoint!")
+      next(403)
     }
   }
 )
@@ -82,7 +83,7 @@ accomadationRouter.get("/:id", async (req, res, next) => {
 accomadationRouter.put(
   "/:id",
   JWTAuthMiddleware,
-  hostOnlyMiddleware,
+  adminMiddleware,
   async (req, res, next) => {
     try {
       const accomadation = await AccomadationModel.findByIdAndUpdate(
@@ -105,7 +106,7 @@ accomadationRouter.put(
 accomadationRouter.delete(
   "/:id",
   JWTAuthMiddleware,
-  hostOnlyMiddleware,
+  adminMiddleware,
   async (req, res, next) => {
     try {
       const accomadation = await AccomadationModel.findByIdAndDelete(

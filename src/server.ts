@@ -10,10 +10,11 @@ import {
   genericErrorHandler,
   notFoundHandler,
   unauthorizedErrorHandler,
-} from "./errorHandlers.js"
+} from "./errorHandlers"
 
-import usersRouter from "./api/users/index.js"
-import accomadationRouter from "./api/accomadation/index.js"
+import usersRouter from "./api/users/index"
+import accomadationRouter from "./api/accomadation/index"
+
 
 const server = express()
 const port = process.env.PORT || 3001
@@ -29,7 +30,8 @@ server.use(badRequestHandler)
 server.use(notFoundHandler)
 server.use(genericErrorHandler)
 
-mongoose.connect(process.env.MONGO_CONNECTION_URL)
+//mongoose.connect(process.env.MONGO_CONNECTION_URL!)
+if (process.env.MONGO_CONNECTION_URL) mongoose.connect(process.env.MONGO_CONNECTION_URL)
 
 mongoose.connection.on("connected", () => {
   console.log("Successfully connected to MongoDB!")

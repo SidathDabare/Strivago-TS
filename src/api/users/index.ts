@@ -2,10 +2,16 @@
 
 import express from "express"
 import createError from "http-errors"
-import UserModel from "./model.js"
+import UserModel from "./model"
+//import { ObjectId } from "mongoose"
 
-import { createAccessToken } from "../../lib/auth/tools.js"
-import { JWTAuthMiddleware } from "../../lib/auth/token.js"
+import { createAccessToken } from "../../lib/auth/tools"
+import { JWTAuthMiddleware } from "../../lib/auth/JWTMiddleware"
+
+// interface LogUser{
+// _id: ObjectId
+// }
+// let user: LogUser{} = {}
 
 const usersRouter = express.Router()
 
@@ -28,39 +34,39 @@ usersRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
     next(error)
   }
 })
-usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    //const user = await UserModel.find()
-    res.send(req.user)
-  } catch (error) {
-    next(error)
-  }
-})
-usersRouter.put("/me", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      req.user._id,
-      req.body,
-      { new: true, runValidators: true }
-    )
-    if (updatedUser) {
-      res.send(updatedUser)
-    } else {
-      next(createError(404, `User with id ${req.params.userId} not found!`))
-    }
-  } catch (error) {
-    next(error)
-  }
-})
+// usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
+//   try {
+//     //const user = await UserModel.find()
+//     res.send(req.user)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
+// usersRouter.put("/me", JWTAuthMiddleware, async (req, res, next) => {
+//   try {
+//     const updatedUser = await UserModel.findByIdAndUpdate(
+//       req.user._id,
+//       req.body,
+//       { new: true, runValidators: true }
+//     )
+//     if (updatedUser) {
+//       res.send(updatedUser)
+//     } else {
+//       next(createError(404, `User with id ${req.params.userId} not found!`))
+//     }
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
-usersRouter.delete("/me", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    await UserModel.findByIdAndDelete(req.user._id)
-    res.status(204).send()
-  } catch (error) {
-    next(error)
-  }
-})
+// usersRouter.delete("/me", JWTAuthMiddleware, async (req, res, next) => {
+//   try {
+//     await UserModel.findByIdAndDelete(req.user._id)
+//     res.status(204).send()
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 usersRouter.get("/:userId", JWTAuthMiddleware, async (req, res, next) => {
   try {
